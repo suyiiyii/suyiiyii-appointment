@@ -20,7 +20,6 @@ async def read_users():
     return users_sheet
 
 
-
 class User_login(BaseModel):
     username: str
     password: str
@@ -33,11 +32,12 @@ def login(user: User_login):
     for user in users_sheet:
         if user['username'] == username and user['password'] == password:
             experation_time = int(time.time() + timedelta(days=1).total_seconds())
-            token_data = {"sub": user["username"],"exp": experation_time}
+            token_data = {"sub": user["username"], "exp": experation_time}
             token = jwt.encode(token_data, SECRET_KEY, ALGORITHM)
             return {
+                "status": "success",
                 "message": "login success",
                 "token": {"access_token": token, "token_type": "bearer"},
             }
 
-    return {"message": "username or passwrod is incorrect"}
+    return {"status": "fail", "message": "username or passwrod is incorrect"}
