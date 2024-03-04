@@ -32,7 +32,7 @@ def login(user: User_login):
     password = user.password
     for user in users_sheet:
         if user['username'] == username and user['password'] == password:
-            experation_time = time.time() + timedelta(days=1).total_seconds()
+            experation_time = int(time.time() + timedelta(days=1).total_seconds())
             token_data = {"sub": user["username"],"exp": experation_time}
             token = jwt.encode(token_data, SECRET_KEY, ALGORITHM)
             return {
