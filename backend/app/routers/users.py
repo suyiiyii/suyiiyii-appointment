@@ -39,5 +39,7 @@ def login(user: User_login):
                 "message": "login success",
                 "token": {"access_token": token, "token_type": "bearer"},
             }
-
-    return {"status": "fail", "message": "username or passwrod is incorrect"}
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="username or passwrod is incorrect",
+    )
