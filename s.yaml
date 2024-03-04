@@ -1,0 +1,72 @@
+edition: 3.0.0
+name: fc3-example
+access: default
+
+# actions:
+#   pre-deploy:
+#     - run: s deploy -t s.oss.yaml -y
+#       path: .
+
+
+resources:
+  function:
+    component: fc3
+    props:
+      region: cn-shenzhen
+      handler: index.handler
+      role: acs:ram::1759622571481595:role/aliyunfcdefaultrole
+      description: ''
+      timeout: 10
+      diskSize: 512
+      internetAccess: true
+      layers:
+        - >-
+          acs:fc:cn-shenzhen:1759622571481595:layers/appointment_system/versions/1
+      customRuntimeConfig:
+        port: 8000
+        command:
+          - python3
+          - -m
+          - uvicorn
+          - app.main:app
+          - --host
+          - 0.0.0.0
+        # healthCheckConfig:
+        #   failureThreshold: 3
+        #   httpGetUrl: /healthcheck
+        #   periodSeconds: 5
+        #   timeoutSeconds: 1
+        #   successThreshold: 1
+      logConfig:
+        enableRequestMetrics: true
+        enableInstanceMetrics: true
+        logBeginRule: DefaultRegex
+        project: aliyun-fc-cn-shenzhen-9e9de85a-9ae4-5304-ad8e-d903b9f56661
+        logstore: function-log
+      functionName: appointment_system-backend
+      runtime: custom.debian10
+      cpu: 0.1
+      instanceConcurrency: 5
+      memorySize: 128
+      environmentVariables:
+        PATH: >-
+          /var/fc/lang/python3.10/bin:/usr/local/bin/apache-maven/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ruby/bin:/opt/bin:/code:/code/bin
+        PYTHONPATH: /opt/python:/code
+        LD_LIBRARY_PATH: >-
+          /code:/code/lib:/usr/local/lib:/opt/lib:/opt/php8.1/lib:/opt/php8.0/lib:/opt/php7.2/lib
+        # SQLALCHEMY_DATABASE_URL: ${env('SQLALCHEMY_DATABASE_URL')}
+      code: ./backend
+      triggers:
+        - triggerConfig:
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            authType: anonymous
+            disableURLInternet: false
+          triggerName: defaultTrigger
+          description: ''
+          qualifier: LATEST
+          triggerType: http
