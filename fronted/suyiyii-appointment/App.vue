@@ -16,7 +16,7 @@
 	/*每个页面公共css */
 
 	.content {
-		margin-top: 3em;
+		/* margin-top: 3em; */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
