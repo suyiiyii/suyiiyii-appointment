@@ -36,7 +36,7 @@ def login(db: Session, user: schemas.UserLogin):
 def read_notifications(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Notification).offset(skip).limit(limit).all()
 
-def add_notification(db: Session, notification: schemas.Notification):
+def add_notification(db: Session, notification: schemas.NotificationBase):
     db_notification = models.Notification(title=notification.title, content=notification.content)
     db.add(db_notification)
     db.commit()

@@ -29,5 +29,5 @@ def read_notifications(skip: int = 0, limit: int = 100, db=Depends(get_db)):
     return notifications
 
 @app.post("/notifications", response_model=schemas.Notification)
-def add_notification(notification: schemas.Notification, db=Depends(get_db)):
+def add_notification(notification: schemas.NotificationBase, db=Depends(get_db)):
     return crud.add_notification(db, notification)

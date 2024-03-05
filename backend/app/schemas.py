@@ -31,6 +31,10 @@ class Token(BaseModel):
     message: str
     token: TokenData
 
-class Notification(BaseModel):
+class NotificationBase(BaseModel):
     title: str
     content: str
+
+class Notification(NotificationBase):
+    created_at: int
+    updated_at: int
