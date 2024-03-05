@@ -23,4 +23,17 @@
 		align-items: center;
 		justify-content: center;
 	}
+
+	.card {
+		/* display: flex; */
+		width: 650rpx;
+	}
+
+/* 	.uni-card {
+		display: flex;
+		justify-content: space-between;
+	} */
+	.card_padding{
+		padding-right: 35rpx;
+	}
 </style>

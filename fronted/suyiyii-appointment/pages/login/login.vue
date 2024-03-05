@@ -23,8 +23,7 @@
 			<view class="button_container">
 				<uv-button type="primary" @click="login(username, password);" :disabled="loading">Login</uv-button>
 				<span style="margin-left: 20rpx;"></span>
-				<uv-button style="margin-left: 20rpx;"
-					@click="this.$refs.loginfail_popup.open('top')">Register</uv-button>
+				<uv-button style="margin-left: 20rpx;" @click="register(username, password);">Register</uv-button>
 			</view>
 		</view>
 		<uni-popup ref="loginfail_popup" type="message">
@@ -44,132 +43,172 @@
 </template>
 
 <script>
-import tuiLoading from "@/uni_modules/thorui/tui-loading/tui-loading.vue"
-import {
-	BASE_URL
-} from '@/config.js';
-export default {
-	components: {
-		tuiLoading
-	},
-	data() {
-		return {
-			username: '',
-			password: '',
-			failmsg: '',
-			token: '',
-			loading: false
-		}
-	},
-	methods: {
-		redirect() {
-			// 跳转到首页
-			uni.switchTab({
-				url: "/pages/index/index"
-			})
+	import tuiLoading from "@/uni_modules/thorui/tui-loading/tui-loading.vue"
+	import {
+		BASE_URL
+	} from '@/config.js';
+	export default {
+		components: {
+			tuiLoading
 		},
-		login(username, password) {
-			// 登录方法
-
-			if (username == '' || password == '') {
-				// 提示用户补全输入
-				this.failmsg = '请输入用户名和密码';
-				this.$refs.input_empty_popup.open('top');
-				return
+		data() {
+			return {
+				username: '',
+				password: '',
+				failmsg: '',
+				token: '',
+				loading: false
 			}
-			// 登录请求
-			let url = `${BASE_URL}/users/login`;
-			let data = {
-				username,
-				password
-			};
-			this.loading = true;
-			uni.request({
-				url: url,
-				method: 'POST',
-				dataType: 'json',
-				data: data,
-				success: res => {
-					console.log(res);
-					if (res.statusCode == 200) {
-						// 登录成功，保存token
-						uni.setStorage({
-							key: "token",
-							data: res.data.token.access_token,
-						})
-						this.redirect()
-					} else {
-						// 登录失败，提示用户
-						this.failmsg = `登录失败：${res.data.detail}`;
-						this.$refs.loginfail_popup.open('top');
-					}
-					this.loading = false;
-				},
-				fail: (e) => {
-					console.log("ERROR")
-					console.log(e)
-					this.failmsg = e.errMsg
-					this.$refs.loginfail_popup.open('top');
-					this.loading = false;
-				}
-
-			})
 		},
-		check_token() {
-			// 检查token方法
-			let token;
-			uni.getStorage({
-				key: 'token',
-				success: ({
-					data
-				}) => {
-					this.token = data
-					console.log(data)
-					this.redirect()
-				},
-				fail: (error) => {
-					this.token = ''
+		methods: {
+			redirect() {
+				// 跳转到首页
+				uni.switchTab({
+					url: "/pages/index/index"
+				})
+			},
+			login(username, password) {
+				// 登录方法
+
+				if (username == '' || password == '') {
+					// 提示用户补全输入
+					this.failmsg = '请输入用户名和密码';
+					this.$refs.input_empty_popup.open('top');
+					return
 				}
-			})
-		}
-	},
-	onLoad() {
-		this.check_token()
-		if (this.token != '') {
-			this.redirect()
+				// 登录请求
+				let url = `${BASE_URL}/users/login`;
+				let data = {
+					username,
+					password
+				};
+				this.loading = true;
+				uni.request({
+					url: url,
+					method: 'POST',
+					dataType: 'json',
+					data: data,
+					success: res => {
+						console.log(res);
+						if (res.statusCode == 200) {
+							// 登录成功，保存token
+							uni.setStorage({
+								key: "token",
+								data: res.data.token.access_token,
+							})
+							this.redirect()
+						} else {
+							// 登录失败，提示用户
+							this.failmsg = `登录失败：${res.data.detail}`;
+							this.$refs.loginfail_popup.open('top');
+						}
+						this.loading = false;
+					},
+					fail: (e) => {
+						console.log("ERROR")
+						console.log(e)
+						this.failmsg = e.errMsg
+						this.$refs.loginfail_popup.open('top');
+						this.loading = false;
+					}
+				})
+			},
+			register(username, password) {
+				if (username == '' || password == '') {
+					// 提示用户补全输入
+					this.failmsg = '请输入用户名和密码';
+					this.$refs.input_empty_popup.open('top');
+					return
+				}
+				let url = `${BASE_URL}/users/register`;
+				let data = {
+					username,
+					password
+				};
+				this.loading = true;
+				uni.request({
+					url: url,
+					method: 'POST',
+					dataType: 'json',
+					data: data,
+					success: res => {
+						console.log(res);
+						if (res.statusCode == 200) {
+							// 注册成功，直接登录
+							this.login(username, password);
+
+						} else {
+							// 登录失败，提示用户
+							this.failmsg = `注册失败：${res.data.detail}`;
+							this.$refs.loginfail_popup.open('top');
+						}
+						this.loading = false;
+					},
+					fail: (e) => {
+						console.log("ERROR")
+						console.log(e)
+						this.failmsg = e.errMsg
+						this.$refs.loginfail_popup.open('top');
+						this.loading = false;
+					}
+				})
+
+			},
+			check_token() {
+				// 检查token方法
+				let token;
+				uni.getStorage({
+					key: 'token',
+					success: ({
+						data
+					}) => {
+						this.token = data
+						console.log(data)
+						this.redirect()
+					},
+					fail: (error) => {
+						this.token = ''
+					}
+				})
+			}
+		},
+		onLoad() {
+			this.check_token()
+			if (this.token != '') {
+				this.redirect()
+			}
 		}
 	}
-}
 </script>
 
 <style>
-#login_box {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-	margin-top: 100rpx;
-	width: 500rpx;
-}
+	#login_box {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		margin-top: 100rpx;
+		width: 500rpx;
+	}
 
-.login_input {
-	margin: 10rpx 0;
-	width: 100%;
-}
+	.login_input {
+		margin: 10rpx 0;
+		width: 100%;
+	}
 
-.button_container {
-	margin: 10rpx 0;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
+	.button_container {
+		margin: 10rpx 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-.welcome_info {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-	margin: 10rpx;
-}
+	.welcome_info {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		margin: 10rpx;
+	}
 </style>

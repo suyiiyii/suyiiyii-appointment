@@ -32,7 +32,7 @@
 				decodedToken: ''
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.hello = this.getGreeting();
 			this.read_token();
 		},
@@ -41,7 +41,6 @@
 			read_token() {
 				// 读取token方法，更新token变量
 				// 如果token不存在，跳转到登录页面
-				// try {
 				// 从LocalStorage中读取token
 
 				try {

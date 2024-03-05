@@ -26,7 +26,7 @@
 			</view>
 		</slot>
 		<!-- 卡片内容 -->
-		<view class="uni-card__content" :style="{padding:padding}" @click="onClick('content')">
+		<view class="uni-card__content" :style="{padding:padding}" style="display: flex; width: 100%; justify-content: space-between;" @click="onClick('content')">
 			<slot></slot>
 		</view>
 		<view class="uni-card__actions" @click="onClick('actions')">
