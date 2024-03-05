@@ -1,4 +1,5 @@
 <script>
+	import tuiLoading from "@/uni_modules/thorui/tui-loading/tui-loading.vue"
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')

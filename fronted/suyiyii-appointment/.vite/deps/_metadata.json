@@ -1,0 +1,13 @@
+{
+  "hash": "b7b14293",
+  "browserHash": "71cab4c9",
+  "optimized": {
+    "jsonwebtoken": {
+      "src": "../../node_modules/jsonwebtoken/index.js",
+      "file": "jsonwebtoken.js",
+      "fileHash": "d2e4056d",
+      "needsInterop": true
+    }
+  },
+  "chunks": {}
+}
