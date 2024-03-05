@@ -32,3 +32,13 @@ def login(db: Session, user: schemas.UserLogin):
         if user.hashed_password == password:
             return user
     return None
+
+def read_notifications(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Notification).offset(skip).limit(limit).all()
+
+def add_notification(db: Session, notification: schemas.Notification):
+    db_notification = models.Notification(title=notification.title, content=notification.content)
+    db.add(db_notification)
+    db.commit()
+    db.refresh(db_notification)
+    return db_notification

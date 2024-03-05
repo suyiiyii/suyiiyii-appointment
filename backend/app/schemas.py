@@ -30,3 +30,7 @@ class Token(BaseModel):
     status: str
     message: str
     token: TokenData
+
+class Notification(BaseModel):
+    title: str
+    content: str
