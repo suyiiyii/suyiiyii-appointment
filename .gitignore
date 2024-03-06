@@ -3,3 +3,4 @@ fronted/suyiyii-appointment/unpackage/
 backend/app/routers/__pycache__/
 __pycache__
 sql_app.db
+ENV

@@ -54,7 +54,7 @@ resources:
         PYTHONPATH: /opt/python:/code
         LD_LIBRARY_PATH: >-
           /code:/code/lib:/usr/local/lib:/opt/lib:/opt/php8.1/lib:/opt/php8.0/lib:/opt/php7.2/lib
-        # SQLALCHEMY_DATABASE_URL: ${env('SQLALCHEMY_DATABASE_URL')}
+        SQLALCHEMY_DATABASE_URL: ${env('SQLALCHEMY_DATABASE_URL')}
       code: ./backend
       triggers:
         - triggerConfig:
