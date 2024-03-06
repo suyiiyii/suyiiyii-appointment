@@ -21,7 +21,7 @@ resources:
       internetAccess: true
       layers:
         - >-
-          acs:fc:cn-shenzhen:1759622571481595:layers/appointment_system/versions/1
+          acs:fc:cn-shenzhen:1759622571481595:layers/appointment_system/versions/3
       customRuntimeConfig:
         port: 8000
         command:
