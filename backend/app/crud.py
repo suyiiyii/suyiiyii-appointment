@@ -32,18 +32,6 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def login(db: Session, user: schemas.UserLogin):
-    if not check_user_exists(db, user.username):
-        return None
-    username = user.username
-    password = security.get_hashed(user.password)
-    user = db.query(models.User).filter(models.User.username == username).first()
-    if user:
-        if user.hashed_password == password:
-            return user
-    return None
-
-
 def read_notifications(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Notification).offset(skip).limit(limit).all()
 

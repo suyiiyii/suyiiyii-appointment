@@ -27,30 +27,6 @@ app.add_middleware(
 app.include_router(users.router)
 
 
-# def get_current_user(token: str = Depends(oauth2_scheme)):
-#     try:
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         username: str = payload.get("sub")
-#         exp: str = payload.get("exp")
-#         if username is None:
-#             raise HTTPException(
-#                 status_code=status.HTTP_401_UNAUTHORIZED,
-#                 detail="Could not validate credentials",
-#             )
-#         if exp < time.time():
-#             raise HTTPException(
-#                 status_code=status.HTTP_401_UNAUTHORIZED, detail="The token has expired"
-#             )
-
-#         token_data = schemas.TokenData(username=username)
-#     except JWTError:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="Could not validate credentials",
-#         )
-#     return token_data
-
-
 @app.get("/notifications", response_model=list[schemas.Notification])
 def read_notifications(
     skip: int = 0,

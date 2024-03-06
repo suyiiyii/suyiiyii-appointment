@@ -20,25 +20,6 @@ class User_login(BaseModel):
     password: str
 
 
-# @router.post('/login', response_model=schemas.Token)
-# def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
-#     ret = crud.login(db, user)
-#     if ret:
-#         experation_time = int(time.time() + timedelta(days=1).total_seconds())
-#         token_data = {"sub": ret.username, "exp": experation_time}
-#         token = jwt.encode(token_data, SECRET_KEY, ALGORITHM)
-#         return {
-#             "status": "success",
-#             "message": "login success",
-#             "token": {"access_token": token, "token_type": "bearer"},
-#         }
-#     else:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail="username or passwrod is incorrect",
-#         )
-
-
 @router.post('/login', response_model=schemas.Token)
 def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
