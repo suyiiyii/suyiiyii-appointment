@@ -5,15 +5,16 @@ class UserBase(BaseModel):
     username: str
 
 
-class UserCreate(UserBase):
-    password: str
-
-
 class User(UserBase):
     id: int
 
-    class Config:
-        orm_mode = True
+
+class UserInDB(User):
+    hashed_password: str
+
+
+class UserCreate(UserBase):
+    password: str
 
 
 class UserLogin(BaseModel):
@@ -21,19 +22,15 @@ class UserLogin(BaseModel):
     password: str
 
 
-class TokenData(BaseModel):
+class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-class Token(BaseModel):
-    status: str
-    message: str
-    token: TokenData
-
 class NotificationBase(BaseModel):
     title: str
     content: str
+
 
 class Notification(NotificationBase):
     created_at: int
