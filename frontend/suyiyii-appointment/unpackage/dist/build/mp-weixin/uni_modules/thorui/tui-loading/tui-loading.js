@@ -1,1 +1,0 @@
-"use strict";const t=require("../../../common/vendor.js");require("../../../app.js");const e={name:"tuiLoading",props:{text:{type:String,default:"正在加载..."}}};const n=t._export_sfc(e,[["render",function(e,n,r,o,s,a){return{a:t.t(r.text)}}],["__scopeId","data-v-b15b6fa1"]]);wx.createComponent(n);

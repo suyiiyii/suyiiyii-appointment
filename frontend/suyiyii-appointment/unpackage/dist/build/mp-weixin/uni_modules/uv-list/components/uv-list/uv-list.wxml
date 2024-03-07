@@ -1,1 +1,0 @@
-<view class="uv-list data-v-cd43a7e2" style="{{e}}"><view wx:if="{{a}}" class="uv-list--border-top data-v-cd43a7e2" style="{{b}}"></view><slot/><view wx:if="{{c}}" class="uv-list--border-bottom data-v-cd43a7e2" style="{{d}}"></view></view>

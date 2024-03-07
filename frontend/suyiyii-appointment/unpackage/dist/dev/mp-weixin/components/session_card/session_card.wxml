@@ -1,1 +1,0 @@
-<view><uni-card wx:if="{{e}}" u-s="{{['d']}}" u-i="51cbd602-0" bind:__l="__l" u-p="{{e}}"><view> 起始时间：{{a}} <view></view> 结束时间：{{b}} <view></view>   地点：{{c}} <view></view> 注意事项：{{d}}</view></uni-card></view>
