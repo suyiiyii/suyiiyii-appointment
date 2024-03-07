@@ -5,8 +5,10 @@ import time
 
 from .database import Base
 
+
 def get_time():
     return int(time.time())
+
 
 class BaseInfo(object):
     created_at = Column(Integer, default=get_time)
@@ -17,8 +19,8 @@ class User(Base, BaseInfo):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    username = Column(String(length=100), unique=True, index=True)
+    hashed_password = Column(String(length=100))
 
 
 class Notification(Base, BaseInfo):
@@ -26,5 +28,5 @@ class Notification(Base, BaseInfo):
 
     id = Column(Integer, primary_key=True)
 
-    title = Column(String)
-    content = Column(String)
+    title = Column(String(length=100))
+    content = Column(String(length=100))

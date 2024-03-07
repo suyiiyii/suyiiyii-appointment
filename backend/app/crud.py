@@ -32,6 +32,19 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def change_password(
+    db: Session, user: schemas.UserInDB, pwd: schemas.UserChangePassword
+):
+    old_hashed_password = security.get_hashed(pwd.oldpassword)
+    new_hashed_password = security.get_hashed(pwd.newpassword)
+    if old_hashed_password != user.hashed_password:
+        return None
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    db_user.hashed_password = new_hashed_password
+    db.commit()
+    return user
+
+
 def read_notifications(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Notification).offset(skip).limit(limit).all()
 

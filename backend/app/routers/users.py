@@ -54,6 +54,21 @@ def register(user: schemas.UserLogin, db: Session = Depends(get_db)):
         )
 
 
-@router.get('/me', response_model=schemas.User)
+@router.post('/change_password', response_model=schemas.User)
+def change_password(
+    passwd: schemas.UserChangePassword,
+    current_user: schemas.UserInDB = Depends(security.get_current_user),
+    db: Session = Depends(get_db),
+):
+    if res := crud.change_password(db, current_user, passwd):
+        return current_user
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="password is incorrect",
+        )
+
+
+@router.get('/me', response_model=schemas.UserInDB)
 def read_me(current_user: models.User = Depends(security.get_current_user)):
     return current_user

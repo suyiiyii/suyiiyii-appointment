@@ -1,0 +1,25 @@
+edition: 1.0.0 # 命令行YAML规范版本，遵循语义化版本（Semantic Versioning）规范
+name: simple_pastebin # 项目名称
+access: "default"
+
+actions:
+  pre-deploy:
+    - run: C:\software\HBuilderX\cli  publish --platform h5 --project suyiyii-appointment
+      path: .
+
+services:
+  front:
+    component: oss
+    props:
+      bucket: suyiyii-appointment
+      codeUri: ./frontend/suyiyii-appointment/unpackage/dist/build/h5/
+      region: cn-shenzhen
+      acl: public-read # 读写权限
+      subDir: /
+      website:
+        index: index.html
+        error: 404.html
+        subDirType: index
+      customDomains: # OSS 绑定域名
+        - domainName: appoint.suyiiyii.top
+          protocol: HTTP
