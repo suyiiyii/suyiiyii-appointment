@@ -1,0 +1,8 @@
+
+.opt {
+	margin-top: 200rpx;
+}
+.login_input {
+	margin: 10rpx 0;
+	width: 100%;
+}

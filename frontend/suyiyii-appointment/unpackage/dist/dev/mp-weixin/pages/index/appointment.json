@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "Suyiiyii's Appointment System",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "uv-tabs": "../../uni_modules/uv-tabs/components/uv-tabs/uv-tabs",
+    "uv-line": "../../uni_modules/uv-line/components/uv-line/uv-line",
+    "uv-picker": "../../uni_modules/uv-picker/components/uv-picker/uv-picker",
+    "uni-card": "../../uni_modules/uni-card/components/uni-card/uni-card",
+    "uv-modal": "../../uni_modules/uv-modal/components/uv-modal/uv-modal",
+    "session_card": "../../components/session_card/session_card",
+    "uni-steps": "../../uni_modules/uni-steps/components/uni-steps/uni-steps"
+  }
+}

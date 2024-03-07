@@ -1,0 +1,10 @@
+
+.mytextarea {
+	height: 200rpx;
+}
+.center_text {
+	font-size: 40rpx;
+	margin-top: 50rpx;
+	display: flex;
+	justify-content: center;
+}
