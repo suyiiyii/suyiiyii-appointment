@@ -12,12 +12,20 @@
 		<uni-card class="card" title="通知" thumbnail="" extra="" note="Tips">
 			{{ notification.content }}
 		</uni-card>
-		<uni-card class="card" title="INFOS ABOUT INTERVIEW" thumbnail="" extra="" note="Tips">
-			<image src="https://via.placeholder.com/150x150.png/3c9cff/fff"></image>
+		<uni-card class="card" title="INFOS ABOUT US" thumbnail="" extra="" note="Tips">
+			<!-- <image src="https://via.placeholder.com/150x150.png/3c9cff/fff"></image> -->
+			欢迎来到Suyiiyii's Lab —— 在科技领域中，我们是一个充满活力和创新精神的工作室。我们的团队由一群充满热情的专业人士组成，他们擅长在前端、后端和大数据等各个技术领域内提供解决方案。
+
 		</uni-card>
 
 		<uni-card class="card" title="MORE INFO ABOUT DIRECTION" thumbnail="" extra="" note="Tips">
-			内容主体，可自定义内容及样式
+			<ul>
+				<li>前端工程师：设计并实现网站的用户界面和交互功能。</li>
+				<li>后端工程师：构建服务器逻辑、数据库管理，保证网站运行。</li>
+				<li>大数据分析师：分析数据洞察趋势，支持决策，优化策略。</li>
+				<li>UI/UX设计师：专注于用户体验和界面设计，提升产品易用性。</li>
+				<li>系统架构师：设计系统架构，确保技术方案的可靠性和扩展性。</li>
+			</ul>
 		</uni-card>
 
 	</view>

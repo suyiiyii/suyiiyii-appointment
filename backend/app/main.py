@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .routers import users
+from .routers import users,appointment,interview
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, time
@@ -25,6 +25,8 @@ app.add_middleware(
 )
 
 app.include_router(users.router)
+app.include_router(appointment.router)
+app.include_router(interview.router)
 
 
 @app.get("/notifications", response_model=list[schemas.Notification])

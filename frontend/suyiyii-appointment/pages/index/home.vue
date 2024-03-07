@@ -32,9 +32,14 @@
 				<view class="login_input">
 					<uni-easyinput v-model="password" placeholder="请输入新密码" type="password" passwordIcon />
 				</view>
-				<button type="primary" size="mini">提交</button>
+				<button type="primary" size="mini" @click="change_password(old_password, password)">提交</button>
 			</view>
+
+			<uni-popup ref="input_empty_popup" type="message">
+				<uni-popup-message type="warn" :message="failmsg" :duration="2000"></uni-popup-message>
+			</uni-popup>
 		</uv-popup>
+
 
 
 		<uni-card class="card" @click="personal_info()">
@@ -55,38 +60,91 @@
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			old_password: '',
-			password: ''
-		}
-	},
-	methods: {
-		logout() {
-			uni.removeStorageSync('token');
-			uni.redirectTo({
-				url: '/pages/login/login'
-			})
+	import {
+		BASE_URL
+	} from '@/config.js';
+	export default {
+		data() {
+			return {
+				old_password: '',
+				password: '',
+				failmsg: "",
+				token: "",
+			}
 		},
-		personal_info(e) {
-			this.$refs.toast.show({
-				type: 'default',
-				title: '默认主题',
-				message: "暂时不支持保存个人信息"
-			})
+		onShow() {
+			this.get_token()
+		},
+		methods: {
+			logout() {
+				uni.removeStorageSync('token');
+				uni.redirectTo({
+					url: '/pages/login/login'
+				})
+			},
+			personal_info(e) {
+				this.$refs.toast.show({
+					type: 'default',
+					title: '默认主题',
+					message: "暂时不支持保存个人信息"
+				})
+			},
+			get_token() {
+				this.token = uni.getStorageSync('token');
+			},
+			change_password(old_password, password) {
+				let url = `${BASE_URL}/users/change_password`;
+
+				if (old_password == '' || password == '') {
+					// 提示用户补全输入
+					this.failmsg = '请输入新密码和旧密码';
+					this.$refs.input_empty_popup.open('top');
+					return
+				}
+				let data = {
+					'oldpassword': old_password,
+					'newpassword': password,
+				}
+				console.log("token:");
+				console.log(this.token);
+				uni.request({
+					url: url,
+					method: 'POST',
+					data: data,
+					header: {
+						'Authorization': `Bearer ${this.token}`
+					},
+					success: (res) => {
+						if (res.statusCode == 200) {
+							this.$refs.toast.show({
+								type: 'success',
+								title: '修改成功',
+								message: '修改成功'
+							})
+							this.$refs.popup.close();
+
+						} else {
+							this.$refs.toast.show({
+								type: 'error',
+								title: '修改失败',
+								message: '修改失败'
+							})
+						}
+					}
+
+				})
+			}
 		}
 	}
-}
 </script>
 
 <style>
-.opt {
-	margin-top: 200rpx;
-}
+	.opt {
+		margin-top: 200rpx;
+	}
 
-.login_input {
-	margin: 10rpx 0;
-	width: 100%;
-}
+	.login_input {
+		margin: 10rpx 0;
+		width: 100%;
+	}
 </style>
