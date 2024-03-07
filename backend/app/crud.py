@@ -125,8 +125,19 @@ def del_appointmenApplication(db: Session, username: str):
         raise ObjectNotFound
 
 
-def read_interview_session(db: Session) -> list[schemas.InterviewSession]:
-    res = db.query(models.InterviewSession).all()
+def read_interview_session(db: Session, name='') -> list[schemas.InterviewSession]:
+    if name:
+        res = (
+            db.query(models.InterviewSession)
+            .filter(models.InterviewSession.name == name)
+            .first()
+        )
+        if res:
+            res = [res]
+        else:
+            res = []
+    else:
+        res = db.query(models.InterviewSession).all()
     return [
         schemas.InterviewSession(
             id=item.id,
@@ -156,3 +167,28 @@ def add_interview_session(db: Session, interview_session: schemas.InterviewSessi
     db.commit()
     db.refresh(db_interview_session)
     return interview_session
+
+
+def add_interview_session_relation(db: Session, username, session_name):
+    relation = models.UserInterviewSession(username=username, session_name=session_name)
+    db.add(relation)
+    db.commit()
+    return relation
+
+
+def read_interveiw_session_by_username(
+    db: Session, username: str
+) -> list[schemas.InterviewSession]:
+    session_name = (
+        db.query(models.UserInterviewSession)
+        .filter(models.UserInterviewSession.username == username)
+        .all()
+    )
+    res = []
+    for item in session_name:
+        res.append(
+            db.query(models.InterviewSession)
+            .filter(models.InterviewSession.name == item.session_name)
+            .first()
+        )
+    return res

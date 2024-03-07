@@ -30,19 +30,27 @@
 					<!-- <button @click="openModal">打开</button> -->
 					<view v-for="(item, index) in sessions" :key="index">
 
-						<session_card :item="item" @click="session_click(item.id)"></session_card>
+						<session_card :item="item" @click="session_click(item.name)"></session_card>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="card" v-if="scrollInto == 'checkin'">
 			<text class="center_text">当前预约的面试</text>
-			<session_card :item="registered_session"></session_card>
-			<text class="center_text">
-				当前状态：{{ session_status }}<br><br>
-				排队人数：{{ people_in_line }}</text>
-			<button type="default" style="margin-top: 30rpx;">签到</button>
-			<button type="default" style="margin-top: 30rpx;">取消签到</button>
+
+			<view v-if="registered_session != []">
+				<view v-for="item in registered_session">
+					<session_card :item="item"></session_card>
+					<text class="center_text">
+						当前状态：{{ session_status }}<br><br>
+						排队人数：{{ people_in_line }}</text>
+					<button type="default" style="margin-top: 30rpx;">签到</button>
+					<button type="default" style="margin-top: 20rpx;">取消签到</button>
+				</view>
+			</view>
+			<view v-else>
+				<text class="center_text">还没有预约面试</text>
+			</view>
 
 		</view>
 		<view class="card" v-if="scrollInto == 'progress'">
@@ -129,9 +137,9 @@ export default {
 				'location': 'llllfasjfoijdsioflocation',
 				'tips': '这是注释'
 			}],
-			session_click_id: -1,
+			session_click_name: -1,
 			//面试签到
-			registered_session: {
+			registered_session: [{
 				'id': 323,
 				'name': "XXX面试2222",
 				'start_time': 1701617812,
@@ -140,22 +148,22 @@ export default {
 				'registered': 99,
 				'location': 'llllfasjfoijdsioflocation',
 				'tips': '这是注释'
-			},
+			}],
 			session_status: "待开始",
 			people_in_line: "未入队",
 			//进度
 			progess_show: [{
-				title_list: '预约面试',
-				desc: '2018-11-11'
+				title: '预约面试',
+				desc: '2024-03-08'
 			}, {
-				title_list: '正式面试',
-				desc: '2018-11-12'
+				title: '正式面试',
+				desc: '0000-00-00'
 			}, {
-				title_list: '第二次面试',
-				desc: '2018-11-13'
+				title: '第二次面试',
+				desc: '0000-00-00'
 			}, {
-				title_list: '评审',
-				desc: '2018-11-14'
+				title: '评审',
+				desc: '0000-00-00'
 			}]
 
 
@@ -166,6 +174,7 @@ export default {
 		this.get_token();
 		this.get_application();
 		this.get_session();
+		this.get_my_session();
 	},
 	methods: {
 		warn(msg) {
@@ -276,7 +285,7 @@ export default {
 						this.error("报名失败：" + res.statusCode + res.data.detail);
 					}
 				},
-				fail: () => {
+				fail: (res) => {
 					this.error("报名失败：" + res.statusCode + res.data.detail);
 				},
 				complete: () => { }
@@ -309,20 +318,44 @@ export default {
 						// this.error("获取失败：" + res.statusCode + res.data.detail);
 					}
 				},
-				fail: () => {
+				fail: (res) => {
 					this.error("获取失败：" + res.statusCode + res.data.detail);
 				},
 				complete: () => { }
 			});
 		},
 		//面试
-		session_click(id) {
-			console.log(id);
-			this.session_click_id = id;
+		session_click(name) {
+			console.log(name);
+			this.session_click_name = name;
 			this.$refs.modal.open();
 		},
 		session_register() {
-			console.log(this.session_click_id)
+			console.log(this.session_click_name)
+			let url = `${BASE_URL}/interview/register` + `?session_name=${this.session_click_name}`
+			let data = {
+				"session_name": this.session_click_name
+			}
+			uni.request({
+				url: url,
+				method: 'GET',
+				header: {
+					'Authorization': `Bearer ${this.token}`
+				},
+				success: res => {
+					console.log(res);
+					if (res.statusCode == 200) {
+						this.success("报名成功");
+						this.get_my_session();
+					} else {
+						this.error("报名失败：" + res.statusCode + res.data.detail);
+					}
+				},
+				fail: (res) => {
+					this.error("报名失败：" + res.statusCode + res.data.detail);
+				},
+			});
+
 		},
 		get_session() {
 			let url = `${BASE_URL}/interview`
@@ -340,11 +373,35 @@ export default {
 						this.error("获取失败：" + res.statusCode + res.data.detail);
 					}
 				},
-				fail: () => {
+				fail: (res) => {
 					this.error("获取失败：" + res.statusCode + res.data.detail);
 				},
 				complete: () => { }
 			});
+		},
+		get_my_session() {
+			let url = `${BASE_URL}/interview/by_username`;
+			uni.request({
+				url: url,
+				method: 'GET',
+				header: {
+					'Authorization': `Bearer ${this.token}`
+				},
+				success: res => {
+					console.log(res);
+					if (res.statusCode == 200) {
+						this.registered_session = res.data
+					} else {
+						this.error("获取失败：" + res.statusCode + res.data.detail);
+					}
+				},
+				fail: (res) => {
+					this.error("获取失败：" + res.statusCode + res.data.detail);
+				},
+				complete: () => { }
+			});
+
+
 		},
 
 	},
