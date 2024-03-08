@@ -20,6 +20,7 @@
 			</uni-card>
 			<button type="primary" @click="submit_application()">{{ button_word }}</button>
 		</view>
+
 		<view class="card" v-if="scrollInto == 'appointment'">
 			<view>
 				<text class="center_text">当前的可选择的场次</text>
@@ -27,14 +28,15 @@
 				<view v-else>
 					<uv-modal ref="modal" title_list="预约确认" content='你要预约这一场面试吗' @confirm="session_register"
 						showCancelButton></uv-modal>
-					<!-- <button @click="openModal">打开</button> -->
-					<view v-for="(item, index) in sessions" :key="index">
-
-						<session_card :item="item" @click="session_click(item.name)"></session_card>
+					<view v-for="(item, index) in sessions" :key="index" :data-name="item.name">
+						<view @click="session_click(item.name)">
+							<session_card :item="item"></session_card>
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+
 		<view class="card" v-if="scrollInto == 'checkin'">
 			<text class="center_text">当前预约的面试</text>
 
