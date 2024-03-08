@@ -5,3 +5,4 @@ __pycache__
 sql_app.db
 ENV
 frontend/suyiyii-appointment/unpackage/*
+.vscode/launch.json

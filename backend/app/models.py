@@ -56,7 +56,7 @@ class InterviewSession(Base, BaseInfo):
     start_time = Column(Integer)
     end_time = Column(Integer)
     capacity = Column(Integer)
-    registered = Column(Integer)
+    # registered = Column(Integer)
     location = Column(String(length=255))
     tips = Column(String(length=255))
 

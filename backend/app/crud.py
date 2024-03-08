@@ -126,31 +126,53 @@ def del_appointmenApplication(db: Session, username: str):
 
 
 def read_interview_session(db: Session, name='') -> list[schemas.InterviewSession]:
+    sesssion_names = [item.name for item in db.query(models.InterviewSession).all()]
     if name:
-        res = (
+        if name not in sesssion_names:
+            raise ObjectNotFound
+        sesssion_names = [name]
+    sessions = []
+    for name in sesssion_names:
+        ret = (
             db.query(models.InterviewSession)
             .filter(models.InterviewSession.name == name)
             .first()
         )
-        if res:
-            res = [res]
-        else:
-            res = []
-    else:
-        res = db.query(models.InterviewSession).all()
-    return [
-        schemas.InterviewSession(
-            id=item.id,
-            name=item.name,
-            start_time=item.start_time,
-            end_time=item.end_time,
-            capacity=item.capacity,
-            registered=item.registered,
-            location=item.location,
-            tips=item.tips,
+        registered = (
+            db.query(models.UserInterviewSession)
+            .filter(models.UserInterviewSession.session_name == name)
+            .count()
         )
-        for item in res
+        session: schemas.InterviewSession = schemas.InterviewSession(
+            id=ret.id,
+            name=ret.name,
+            start_time=ret.start_time,
+            end_time=ret.end_time,
+            capacity=ret.capacity,
+            registered=registered,
+            location=ret.location,
+            tips=ret.tips,
+        )
+        sessions.append(session)
+    return sessions
+
+
+def read_interveiw_session_by_username(
+    db: Session, username: str
+) -> list[schemas.InterviewSession]:
+    session_name = [
+        session.session_name
+        for session in (
+            db.query(models.UserInterviewSession)
+            .filter(models.UserInterviewSession.username == username)
+            .all()
+        )
     ]
+    sessions = []
+    for name in session_name:
+        ret = read_interview_session(db, name)[0]
+        sessions.append(ret)
+    return sessions
 
 
 def add_interview_session(db: Session, interview_session: schemas.InterviewSession):
@@ -159,7 +181,7 @@ def add_interview_session(db: Session, interview_session: schemas.InterviewSessi
         start_time=interview_session.start_time,
         end_time=interview_session.end_time,
         capacity=interview_session.capacity,
-        registered=interview_session.registered,
+        # registered=interview_session.registered,
         location=interview_session.location,
         tips=interview_session.tips,
     )
@@ -174,21 +196,3 @@ def add_interview_session_relation(db: Session, username, session_name):
     db.add(relation)
     db.commit()
     return relation
-
-
-def read_interveiw_session_by_username(
-    db: Session, username: str
-) -> list[schemas.InterviewSession]:
-    session_name = (
-        db.query(models.UserInterviewSession)
-        .filter(models.UserInterviewSession.username == username)
-        .all()
-    )
-    res = []
-    for item in session_name:
-        res.append(
-            db.query(models.InterviewSession)
-            .filter(models.InterviewSession.name == item.session_name)
-            .first()
-        )
-    return res

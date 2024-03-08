@@ -9,7 +9,10 @@
                 "backend.app.main:app",
                 "--reload"
             ],
-            "jinja": true
+            "jinja": true,
+            "env": {
+                "SQLALCHEMY_DATABASE_URL":"mysql+pymysql://suyiiyii:890iop@8.138.123.156:3306/appointment"
+            }
         }
     ]
 }
