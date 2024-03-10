@@ -7,6 +7,7 @@ from ..database import get_db
 router = APIRouter(prefix='/appointment', tags=['appointment'])
 
 
+
 @router.get('', response_model=schemas.AppointmenApplication)
 def read_appointmenApplication(
     # username: str,
