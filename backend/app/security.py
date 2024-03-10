@@ -50,6 +50,7 @@ def authenticate_user(username: str, password: str, db=Depends(get_db)):
     return True
 
 
+
 def create_access_token(data: dict, expires_delta: int = -1):
     expire = time.time() + timedelta(days=1).total_seconds()
     to_encode = {'sub': data, 'exp': expire}
