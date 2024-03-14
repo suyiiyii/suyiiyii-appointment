@@ -7,7 +7,6 @@ from ..database import get_db
 router = APIRouter(prefix='/appointment', tags=['appointment'])
 
 
-
 @router.get('', response_model=schemas.AppointmenApplication)
 def read_appointmenApplication(
     # username: str,
@@ -18,7 +17,9 @@ def read_appointmenApplication(
     Get appointment application by username
     """
     try:
-        appointmenApplication = crud.read_appointmenApplication(db, username=current_user.username)
+        appointmenApplication = crud.read_appointmenApplication(
+            db, username=current_user.username
+        )
     except crud.ObjectNotFound:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Appointment not found"

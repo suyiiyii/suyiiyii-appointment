@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .routers import users,appointment,interview
+from .routers import users, appointment, interview
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn, time
